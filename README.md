@@ -45,7 +45,6 @@ $ npm run lint          # check whether there is any potential error
 $ npm run lint:fix      # fix whether there is any potential error
 $ npm run prettier      # beautify the unorganized code
 $ npm run prettier:fix  # prettier-fix your code
-$ npm test              # development test
 ```
 
 ### API Documentation: [POSTMAN API DOCUMENTATION (Click Here)](https://www.postman.com/winter-capsule-905954/public-work-space/documentation/lmm1qt1/car-store)
