@@ -1,5 +1,11 @@
 # Assignment-2
 
+This is my second assignment in the Programming Hero Next Level Web Development course platform. I am very excited to share and describe my project with you.
+
+This is a car store management application that consists of two collections: One is the car collection, another order collection. The first one involves creating, fetching, updating and deleting operations. The second one handles order management as well as manages generating overall revenue.
+
+Here is the description of how I have set up my project environment, the technologies I have used, how to run and inspect the project and last but not the least - Postman API Documentation:
+
 ## PROJECT SETUP
 
 ## Local Environment Setup
