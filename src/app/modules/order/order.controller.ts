@@ -5,19 +5,27 @@ import { OrderServices } from './order.service';
 import orderValidationSchema from './order.validation';
 import giveGenericErrorResponse from '../../../utils/genericError';
 
-/////////////////////////
-//TODO: While pacing order throw error for quantity shortage
 const createOrder = async (req: Request, res: Response) => {
   try {
     const zodParsedOrderData = orderValidationSchema.parse(req.body);
     zodParsedOrderData.car = new ObjectId(zodParsedOrderData.car);
-    const order = await OrderServices.createOne(zodParsedOrderData);
 
-    res.status(201).json({
-      message: 'Order created successfully',
-      success: true,
-      data: order,
-    });
+    const car = await OrderServices.getCarById(zodParsedOrderData.car);
+    if (!car || car.quantity < zodParsedOrderData.quantity) {
+      res.status(400).json({
+        message: 'Insufficient car quantity available!',
+        success: false,
+      });
+    } else {
+      const order = await OrderServices.createOne(zodParsedOrderData);
+      await OrderServices.reduceCarQuantity(order.car, order.quantity);
+
+      res.status(201).json({
+        message: 'Order created successfully',
+        success: true,
+        data: order,
+      });
+    }
   } catch (error: any) {
     giveGenericErrorResponse(error, res);
   }

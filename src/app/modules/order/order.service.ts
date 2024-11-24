@@ -1,8 +1,28 @@
+import { ObjectId } from 'mongodb';
 import { Order } from './order.model';
+import { Car } from '../car/car.model';
 import { IOrder } from './order.interface';
 
 const createOne = async (orderData: IOrder): Promise<IOrder> => {
   const result = await Order.create(orderData);
+
+  return result;
+};
+
+const getCarById = async (carId: ObjectId) => {
+  const result = await Car.findById(carId);
+
+  return result;
+};
+
+const reduceCarQuantity = async (carId: ObjectId, quantity: number) => {
+  const result = await Car.findByIdAndUpdate(
+    carId,
+    {
+      $inc: { quantity: -quantity },
+    },
+    { new: true },
+  );
 
   return result;
 };
@@ -43,5 +63,7 @@ const calculateRevenue = async () => {
 
 export const OrderServices = {
   createOne,
+  getCarById,
+  reduceCarQuantity,
   calculateRevenue,
 };
