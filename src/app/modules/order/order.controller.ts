@@ -11,14 +11,21 @@ const createOrder = async (req: Request, res: Response) => {
     zodParsedOrderData.car = new ObjectId(zodParsedOrderData.car);
 
     const car = await OrderServices.getCarById(zodParsedOrderData.car);
-    if (!car || car.quantity < zodParsedOrderData.quantity) {
+    if (!car || !car.inStock || car.quantity < zodParsedOrderData.quantity) {
       res.status(400).json({
         message: 'Insufficient car quantity available!',
         success: false,
       });
     } else {
+      // 1. place order
       const order = await OrderServices.createOne(zodParsedOrderData);
+      // 2. reduce quantity
       await OrderServices.reduceCarQuantity(order.car, order.quantity);
+      // 3. update inStock property to false if equals to 0
+      if (car.quantity - order.quantity === 0) {
+        car.inStock = false;
+        await car.save();
+      }
 
       res.status(201).json({
         message: 'Order created successfully',
