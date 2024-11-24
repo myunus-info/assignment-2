@@ -1,10 +1,12 @@
-import { ObjectId } from 'mongodb';
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import { OrderServices } from './order.service';
 import orderValidationSchema from './order.validation';
 import giveGenericErrorResponse from '../../../utils/genericError';
 
+/////////////////////////
+//TODO: While pacing order throw error for quantity shortage
 const createOrder = async (req: Request, res: Response) => {
   try {
     const zodParsedOrderData = orderValidationSchema.parse(req.body);

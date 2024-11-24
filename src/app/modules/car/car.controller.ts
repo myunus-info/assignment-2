@@ -27,7 +27,7 @@ const getAllCars = async (req: Request, res: Response) => {
     const cars = await CarServices.fetchAll(search);
 
     if (cars.length < 1) {
-      res.status(400).json({ message: 'No car found!' });
+      res.status(404).json({ message: 'No car found!' });
     } else {
       res.status(200).json({
         message: 'Cars retrieved successfully',
@@ -63,9 +63,17 @@ const getASpecificCar = async (req: Request, res: Response) => {
 const updateACar = async (req: Request, res: Response) => {
   try {
     const { carId } = req.params;
-    const partialCar = req.body;
+    const carUpdates = req.body;
 
-    const updatedCar = await CarServices.updateOne(carId, partialCar);
+    const carUpdatesValidationSchema = carValidationSchema.partial();
+
+    const zodParsedCarUpdatesData =
+      carUpdatesValidationSchema.parse(carUpdates);
+
+    const updatedCar = await CarServices.updateOne(
+      carId,
+      zodParsedCarUpdatesData,
+    );
 
     res.status(200).json({
       message: 'Car updated successfully',
