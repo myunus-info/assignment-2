@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import { OrderServices } from './order.service';
 import orderValidationSchema from './order.validation';
-import giveGenericErrorResponse from '../../../utils/genericError';
+import giveGenericErrorResponse from '../../errors/genericError';
 
 const createOrder = async (req: Request, res: Response) => {
   try {

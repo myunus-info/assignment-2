@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import { CarServices } from './car.service';
 import carValidationSchema from './car.validation';
-import giveGenericErrorResponse from '../../../utils/genericError';
+import giveGenericErrorResponse from '../../errors/genericError';
 
 const createCar = async (req: Request, res: Response) => {
   try {
